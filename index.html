@@ -15,6 +15,8 @@
       --green-pale: #D5F5E3;
       --red: #922B21;
       --red-pale: #FADBD8;
+      --orange: #A04000;
+      --orange-pale: #FDEBD0;
       --gray: #5D6D7E;
       --gray-light: #F4F6F7;
       --white: #fff;
@@ -22,266 +24,124 @@
       --shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: var(--gray-light);
-      color: #1C2833;
-      min-height: 100vh;
-    }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--gray-light); color: #1C2833; min-height: 100vh; }
 
-    /* ── LOGIN ── */
-    #login-screen {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
-    }
-    .login-card {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 48px 40px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-      text-align: center;
-    }
+    #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%); }
+    .login-card { background: var(--white); border-radius: 16px; padding: 48px 40px; width: 100%; max-width: 400px; box-shadow: 0 8px 32px rgba(0,0,0,0.18); text-align: center; }
     .login-card h1 { font-size: 26px; color: var(--blue); margin-bottom: 6px; }
     .login-card p { color: var(--gray); font-size: 14px; margin-bottom: 32px; }
-    .login-card input {
-      width: 100%; padding: 12px 16px; border: 1.5px solid var(--border);
-      border-radius: 8px; font-size: 15px; margin-bottom: 14px; outline: none;
-      transition: border 0.2s;
-    }
+    .login-card input { width: 100%; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 15px; margin-bottom: 14px; outline: none; transition: border 0.2s; }
     .login-card input:focus { border-color: var(--blue-light); }
-    .btn-primary {
-      width: 100%; padding: 13px; background: var(--blue); color: var(--white);
-      border: none; border-radius: 8px; font-size: 15px; font-weight: 600;
-      cursor: pointer; transition: background 0.2s;
-    }
+    .btn-primary { width: 100%; padding: 13px; background: var(--blue); color: var(--white); border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
     .btn-primary:hover { background: var(--blue-light); }
     #login-error { color: var(--red); font-size: 13px; margin-top: 10px; display: none; }
 
-    /* ── MAIN APP ── */
     #app { display: none; }
-
-    header {
-      background: var(--blue);
-      color: var(--white);
-      padding: 0 32px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: var(--shadow);
-    }
+    header { background: var(--blue); color: var(--white); padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow); }
     header h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
     header span { font-size: 13px; opacity: 0.8; }
-    .btn-logout {
-      background: rgba(255,255,255,0.15); color: var(--white);
-      border: 1px solid rgba(255,255,255,0.3); border-radius: 6px;
-      padding: 6px 14px; font-size: 13px; cursor: pointer;
-      transition: background 0.2s;
-    }
+    .btn-logout { background: rgba(255,255,255,0.15); color: var(--white); border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; padding: 6px 14px; font-size: 13px; cursor: pointer; transition: background 0.2s; }
     .btn-logout:hover { background: rgba(255,255,255,0.25); }
 
     .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
 
-    /* ── STATS ── */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-    .stat-card {
-      background: var(--white);
-      border-radius: 12px;
-      padding: 20px 24px;
-      box-shadow: var(--shadow);
-      border-left: 4px solid var(--blue);
-    }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .stat-card { background: var(--white); border-radius: 12px; padding: 20px 24px; box-shadow: var(--shadow); border-left: 4px solid var(--blue); }
     .stat-card .number { font-size: 32px; font-weight: 700; color: var(--blue); }
     .stat-card .label { font-size: 13px; color: var(--gray); margin-top: 4px; }
 
-    /* ── TABS ── */
-    .tabs {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 24px;
-      background: var(--white);
-      padding: 6px;
-      border-radius: 10px;
-      box-shadow: var(--shadow);
-      width: fit-content;
-    }
-    .tab {
-      padding: 8px 20px; border-radius: 7px; border: none;
-      font-size: 14px; font-weight: 500; cursor: pointer;
-      background: transparent; color: var(--gray);
-      transition: all 0.2s;
-    }
+    .tabs { display: flex; gap: 4px; margin-bottom: 24px; background: var(--white); padding: 6px; border-radius: 10px; box-shadow: var(--shadow); width: fit-content; }
+    .tab { padding: 8px 20px; border-radius: 7px; border: none; font-size: 14px; font-weight: 500; cursor: pointer; background: transparent; color: var(--gray); transition: all 0.2s; }
     .tab.active { background: var(--blue); color: var(--white); }
     .tab:hover:not(.active) { background: var(--blue-pale); color: var(--blue); }
 
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* ── CARD ── */
-    .card {
-      background: var(--white);
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: var(--shadow);
-      margin-bottom: 24px;
-    }
+    .card { background: var(--white); border-radius: 12px; padding: 24px; box-shadow: var(--shadow); margin-bottom: 24px; }
     .card h2 { font-size: 17px; font-weight: 600; color: var(--blue); margin-bottom: 20px; }
 
-    /* ── PERSONS LIST ── */
-    .persons-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 16px;
-    }
-    .person-card {
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-      transition: box-shadow 0.2s;
-    }
+    .persons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    .person-card { border: 1.5px solid var(--border); border-radius: 10px; padding: 16px; transition: box-shadow 0.2s; }
     .person-card:hover { box-shadow: var(--shadow); }
     .person-card.inactive { opacity: 0.5; }
-    .person-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .person-avatar {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: var(--blue-pale);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; font-weight: 700; color: var(--blue);
-      flex-shrink: 0;
-    }
+    .person-card.only-robot { border-color: #F0B27A; background: #FEF9E7; }
+    .person-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .person-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--blue-pale); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: var(--blue); flex-shrink: 0; }
+    .person-avatar.robot-only { background: #FDEBD0; color: var(--orange); }
     .person-name { font-size: 15px; font-weight: 600; }
     .person-role { font-size: 12px; color: var(--gray); }
-    .badge {
-      display: inline-block; padding: 2px 8px; border-radius: 20px;
-      font-size: 11px; font-weight: 600;
-    }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
     .badge-active { background: var(--green-pale); color: var(--green); }
     .badge-inactive { background: var(--red-pale); color: var(--red); }
+    .badge-robot { background: var(--orange-pale); color: var(--orange); }
     .person-meta { font-size: 12px; color: var(--gray); margin-bottom: 12px; }
-    .person-actions { display: flex; gap: 8px; }
-    .btn-sm {
-      padding: 5px 12px; border-radius: 6px; border: none;
-      font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s;
-    }
+    .person-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-sm { padding: 5px 12px; border-radius: 6px; border: none; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
     .btn-toggle-on { background: var(--green-pale); color: var(--green); }
     .btn-toggle-on:hover { background: var(--green); color: var(--white); }
     .btn-toggle-off { background: var(--red-pale); color: var(--red); }
     .btn-toggle-off:hover { background: var(--red); color: var(--white); }
     .btn-delete { background: var(--gray-light); color: var(--gray); }
     .btn-delete:hover { background: var(--red-pale); color: var(--red); }
+    .btn-import { background: var(--orange-pale); color: var(--orange); }
+    .btn-import:hover { background: var(--orange); color: var(--white); }
 
-    /* ── REGISTER FORM ── */
+    .sync-banner { background: var(--orange-pale); border: 1.5px solid #F0B27A; border-radius: 10px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .sync-banner p { font-size: 14px; color: var(--orange); margin: 0; }
+    .btn-sync-all { background: var(--orange); color: white; border: none; border-radius: 7px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .btn-sync-all:hover { opacity: 0.85; }
+
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-group { display: flex; flex-direction: column; gap: 6px; }
     .form-group.full { grid-column: 1 / -1; }
     label { font-size: 13px; font-weight: 600; color: var(--gray); }
-    input[type="text"], select, textarea {
-      padding: 10px 14px; border: 1.5px solid var(--border);
-      border-radius: 8px; font-size: 14px; outline: none;
-      transition: border 0.2s; font-family: inherit;
-    }
-    input[type="text"]:focus, select:focus, textarea:focus {
-      border-color: var(--blue-light);
-    }
+    input[type="text"], select, textarea { padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; transition: border 0.2s; font-family: inherit; }
+    input[type="text"]:focus, select:focus, textarea:focus { border-color: var(--blue-light); }
 
-    .dropzone {
-      border: 2px dashed var(--border); border-radius: 10px;
-      padding: 32px; text-align: center; cursor: pointer;
-      transition: all 0.2s; background: var(--gray-light);
-    }
-    .dropzone:hover, .dropzone.dragover {
-      border-color: var(--blue-light); background: var(--blue-pale);
-    }
+    .dropzone { border: 2px dashed var(--border); border-radius: 10px; padding: 32px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--gray-light); }
+    .dropzone:hover, .dropzone.dragover { border-color: var(--blue-light); background: var(--blue-pale); }
     .dropzone p { color: var(--gray); font-size: 14px; margin-top: 8px; }
     .dropzone .icon { font-size: 36px; }
 
-    .preview-grid {
-      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px;
-    }
-    .preview-item {
-      position: relative; width: 90px; height: 90px;
-    }
-    .preview-item img {
-      width: 100%; height: 100%; object-fit: cover;
-      border-radius: 8px; border: 2px solid var(--border);
-    }
-    .preview-item .remove-btn {
-      position: absolute; top: -6px; right: -6px;
-      width: 20px; height: 20px; border-radius: 50%;
-      background: var(--red); color: white; border: none;
-      font-size: 12px; cursor: pointer; display: flex;
-      align-items: center; justify-content: center;
-    }
+    .preview-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .preview-item { position: relative; width: 90px; height: 90px; }
+    .preview-item img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; border: 2px solid var(--border); }
+    .preview-item .remove-btn { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; background: var(--red); color: white; border: none; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-    .btn-register {
-      margin-top: 20px; padding: 12px 28px;
-      background: var(--blue); color: var(--white);
-      border: none; border-radius: 8px; font-size: 15px;
-      font-weight: 600; cursor: pointer; transition: background 0.2s;
-    }
+    .btn-register { margin-top: 20px; padding: 12px 28px; background: var(--blue); color: var(--white); border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
     .btn-register:hover { background: var(--blue-light); }
     .btn-register:disabled { background: var(--gray); cursor: not-allowed; }
 
-    /* ── ALERTS ── */
-    .alert {
-      padding: 12px 16px; border-radius: 8px; font-size: 14px;
-      margin-bottom: 16px; display: none;
-    }
+    .alert { padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; display: none; }
     .alert-success { background: var(--green-pale); color: var(--green); }
     .alert-error { background: var(--red-pale); color: var(--red); }
 
-    /* ── LOGS ── */
     .logs-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    .logs-table th {
-      text-align: left; padding: 10px 14px;
-      background: var(--gray-light); color: var(--gray);
-      font-weight: 600; font-size: 12px; text-transform: uppercase;
-    }
+    .logs-table th { text-align: left; padding: 10px 14px; background: var(--gray-light); color: var(--gray); font-weight: 600; font-size: 12px; text-transform: uppercase; }
     .logs-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
     .logs-table tr:last-child td { border-bottom: none; }
     .score-high { color: var(--green); font-weight: 600; }
     .score-med { color: #B7950B; font-weight: 600; }
     .score-low { color: var(--red); font-weight: 600; }
 
-    /* ── LOADER ── */
-    .loader {
-      display: inline-block; width: 18px; height: 18px;
-      border: 2px solid rgba(255,255,255,0.4);
-      border-top-color: white; border-radius: 50%;
-      animation: spin 0.6s linear infinite; vertical-align: middle;
-    }
+    .loader { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; vertical-align: middle; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .empty-state {
-      text-align: center; padding: 48px; color: var(--gray);
-    }
+    .empty-state { text-align: center; padding: 48px; color: var(--gray); }
     .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
 
     @media (max-width: 600px) {
       .form-grid { grid-template-columns: 1fr; }
       .container { padding: 16px; }
       header { padding: 0 16px; }
+      .sync-banner { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
-<!-- ── LOGIN ── -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-card">
     <h1>🤖 ZoxiRobit</h1>
@@ -293,7 +153,7 @@
   </div>
 </div>
 
-<!-- ── APP ── -->
+<!-- APP -->
 <div id="app">
   <header>
     <h1>🤖 ZoxiRobit Admin</h1>
@@ -304,9 +164,7 @@
   </header>
 
   <div class="container">
-
-    <!-- Stats -->
-    <div class="stats-grid" id="stats-grid">
+    <div class="stats-grid">
       <div class="stat-card">
         <div class="number" id="stat-total">—</div>
         <div class="label">Personas registradas</div>
@@ -325,11 +183,10 @@
       </div>
     </div>
 
-    <!-- Tabs -->
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('personas')">👥 Personas</button>
-      <button class="tab" onclick="switchTab('registrar')">➕ Registrar</button>
-      <button class="tab" onclick="switchTab('logs')">📋 Logs</button>
+      <button class="tab active" onclick="switchTab('personas', event)">👥 Personas</button>
+      <button class="tab" onclick="switchTab('registrar', event)">➕ Registrar</button>
+      <button class="tab" onclick="switchTab('logs', event)">📋 Logs</button>
     </div>
 
     <!-- Tab: Personas -->
@@ -339,6 +196,7 @@
           <h2 style="margin:0">Personas Registradas</h2>
           <button class="btn-sm btn-toggle-on" onclick="loadPersons()">🔄 Actualizar</button>
         </div>
+        <div id="sync-banner-container"></div>
         <div id="persons-list"><div class="empty-state"><div class="icon">⏳</div><p>Cargando...</p></div></div>
       </div>
     </div>
@@ -349,7 +207,6 @@
         <h2>Registrar Nueva Persona</h2>
         <div id="register-alert-success" class="alert alert-success"></div>
         <div id="register-alert-error" class="alert alert-error"></div>
-
         <div class="form-grid">
           <div class="form-group">
             <label>Nombre completo *</label>
@@ -379,10 +236,7 @@
             <div class="preview-grid" id="preview-grid"></div>
           </div>
         </div>
-
-        <button class="btn-register" id="btn-register" onclick="registerPerson()">
-          Registrar Persona
-        </button>
+        <button class="btn-register" id="btn-register" onclick="registerPerson()">Registrar Persona</button>
       </div>
     </div>
 
@@ -396,7 +250,6 @@
         <div id="logs-container"><div class="empty-state"><div class="icon">⏳</div><p>Cargando...</p></div></div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -411,9 +264,7 @@
     const pass = document.getElementById('login-pass').value.trim();
     const errEl = document.getElementById('login-error');
     errEl.style.display = 'none';
-
     if (!user || !pass) { errEl.style.display = 'block'; errEl.textContent = 'Completa todos los campos'; return; }
-
     try {
       const res = await fetch(`${API}/auth/login`, {
         method: 'POST',
@@ -422,7 +273,6 @@
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.detail || 'Error');
-
       currentUser = data;
       localStorage.setItem('zr_token', data.token);
       localStorage.setItem('zr_user', JSON.stringify(data));
@@ -449,7 +299,6 @@
     loadPersons();
   }
 
-  // Auto-login si hay token guardado
   window.onload = () => {
     const saved = localStorage.getItem('zr_user');
     if (saved) { currentUser = JSON.parse(saved); showApp(); }
@@ -457,11 +306,11 @@
   };
 
   // ── TABS ───────────────────────────────────────────────────
-  function switchTab(name) {
+  function switchTab(name, e) {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.getElementById(`tab-${name}`).classList.add('active');
-    event.target.classList.add('active');
+    if (e && e.target) e.target.classList.add('active');
     if (name === 'personas') loadPersons();
     if (name === 'logs') loadLogs();
     if (name === 'registrar') { selectedImages = []; renderPreviews(); }
@@ -482,18 +331,42 @@
   // ── PERSONS ────────────────────────────────────────────────
   async function loadPersons() {
     const el = document.getElementById('persons-list');
+    const bannerEl = document.getElementById('sync-banner-container');
     el.innerHTML = '<div class="empty-state"><div class="icon">⏳</div><p>Cargando...</p></div>';
-    try {
-      const res = await fetch(`${API}/people`);
-      const data = await res.json();
-      const people = data.people || [];
+    bannerEl.innerHTML = '';
 
-      if (people.length === 0) {
+    try {
+      // Fetch Supabase people + HF Space memory in parallel
+      const [peopleRes, statusRes] = await Promise.all([
+        fetch(`${API}/people`),
+        fetch(`${API}/status`)
+      ]);
+      const peopleData = await peopleRes.json();
+      const statusData = await statusRes.json();
+
+      const supabasePeople = peopleData.people || [];
+      // Names in HF Space memory but not in Supabase
+      const memoryNames = statusData.people_registered || [];
+      const supabaseNames = supabasePeople.map(p => p.name);
+      const onlyInRobot = memoryNames.filter(n => !supabaseNames.includes(n));
+
+      // Show sync banner if there are orphan names
+      if (onlyInRobot.length > 0) {
+        bannerEl.innerHTML = `
+          <div class="sync-banner">
+            <p>⚠️ <strong>${onlyInRobot.length} persona(s)</strong> están en el robot pero no en el panel: <em>${onlyInRobot.join(', ')}</em></p>
+            <button class="btn-sync-all" onclick="importRobotPersons(${JSON.stringify(onlyInRobot).replace(/"/g, '&quot;')})">
+              ⬇️ Importar al panel
+            </button>
+          </div>`;
+      }
+
+      if (supabasePeople.length === 0 && onlyInRobot.length === 0) {
         el.innerHTML = '<div class="empty-state"><div class="icon">👤</div><p>No hay personas registradas aún</p></div>';
         return;
       }
 
-      el.innerHTML = `<div class="persons-grid">${people.map(p => personCard(p)).join('')}</div>`;
+      el.innerHTML = `<div class="persons-grid">${supabasePeople.map(p => personCard(p)).join('')}</div>`;
     } catch (e) {
       el.innerHTML = '<div class="empty-state"><div class="icon">❌</div><p>Error cargando personas</p></div>';
     }
@@ -529,6 +402,7 @@
       </div>`;
   }
 
+  // FIX: ahora llama /reload-db después del PATCH para sincronizar HF Space
   async function togglePerson(name, newActive) {
     try {
       await fetch(`${API}/people/${encodeURIComponent(name)}`, {
@@ -536,6 +410,8 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ active: newActive })
       });
+      // Sincronizar memoria del HF Space
+      await fetch(`${API}/reload-db`, { method: 'POST' });
       loadPersons();
       loadStats();
     } catch (e) { alert('Error actualizando persona'); }
@@ -545,9 +421,30 @@
     if (!confirm(`¿Eliminar a ${name}? Esta acción no se puede deshacer.`)) return;
     try {
       await fetch(`${API}/people/${encodeURIComponent(name)}`, { method: 'DELETE' });
+      await fetch(`${API}/reload-db`, { method: 'POST' });
       loadPersons();
       loadStats();
     } catch (e) { alert('Error eliminando persona'); }
+  }
+
+  // Importa personas del robot que no están en Supabase
+  async function importRobotPersons(names) {
+    if (!confirm(`¿Importar al panel a: ${names.join(', ')}?\nSe crearán con rol "empleado" y podrás editarlos después.`)) return;
+    let ok = 0, fail = 0;
+    for (const name of names) {
+      try {
+        const res = await fetch(`${API}/people`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, role: 'empleado', registered_by: currentUser?.username || 'admin', notes: 'Importado desde robot' })
+        });
+        const data = await res.json();
+        if (data.ok || res.ok) ok++; else fail++;
+      } catch { fail++; }
+    }
+    alert(`Importación: ${ok} exitosos, ${fail} fallidos.`);
+    loadPersons();
+    loadStats();
   }
 
   // ── REGISTER ───────────────────────────────────────────────
@@ -566,10 +463,7 @@
     handleFiles(e.dataTransfer.files);
   }
 
-  function removeImage(idx) {
-    selectedImages.splice(idx, 1);
-    renderPreviews();
-  }
+  function removeImage(idx) { selectedImages.splice(idx, 1); renderPreviews(); }
 
   function renderPreviews() {
     const grid = document.getElementById('preview-grid');
@@ -604,9 +498,7 @@
         body: JSON.stringify({ name, role, notes, registered_by: currentUser?.username || 'admin', images })
       });
       const data = await res.json();
-
       if (!data.ok) throw new Error(data.error || 'Error registrando');
-
       showAlert(successEl, `✅ ${name} registrado con ${data.embeddings_saved} fotos. El robot ya puede reconocerlo.`);
       document.getElementById('reg-name').value = '';
       document.getElementById('reg-role').value = '';
@@ -636,22 +528,13 @@
       const res = await fetch(`${API}/logs?limit=50`);
       const data = await res.json();
       const logs = data.logs || [];
-
       if (logs.length === 0) {
         el.innerHTML = '<div class="empty-state"><div class="icon">📋</div><p>No hay reconocimientos registrados aún</p></div>';
         return;
       }
-
       el.innerHTML = `
         <table class="logs-table">
-          <thead>
-            <tr>
-              <th>Persona</th>
-              <th>Score</th>
-              <th>Cámara</th>
-              <th>Fecha y hora</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Persona</th><th>Score</th><th>Cámara</th><th>Fecha y hora</th></tr></thead>
           <tbody>
             ${logs.map(l => `
               <tr>
