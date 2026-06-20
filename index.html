@@ -108,6 +108,8 @@
     .preview-item { position: relative; width: 90px; height: 90px; }
     .preview-item img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; border: 2px solid var(--border); }
     .preview-item .remove-btn { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; background: var(--red); color: white; border: none; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .preview-item.failed img { border-color: var(--red); opacity: 0.55; }
+    .preview-item .fail-tag { position: absolute; bottom: -6px; left: 0; right: 0; background: var(--red); color: white; font-size: 9px; text-align: center; border-radius: 0 0 6px 6px; padding: 1px 0; }
 
     .btn-register { margin-top: 20px; padding: 12px 28px; background: var(--blue); color: var(--white); border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
     .btn-register:hover { background: var(--blue-light); }
@@ -116,6 +118,7 @@
     .alert { padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; display: none; }
     .alert-success { background: var(--green-pale); color: var(--green); }
     .alert-error { background: var(--red-pale); color: var(--red); }
+    .alert-warning { background: var(--orange-pale); color: var(--orange); }
 
     .logs-table { width: 100%; border-collapse: collapse; font-size: 14px; }
     .logs-table th { text-align: left; padding: 10px 14px; background: var(--gray-light); color: var(--gray); font-weight: 600; font-size: 12px; text-transform: uppercase; }
@@ -207,6 +210,7 @@
         <h2>Registrar Nueva Persona</h2>
         <div id="register-alert-success" class="alert alert-success"></div>
         <div id="register-alert-error" class="alert alert-error"></div>
+        <div id="register-alert-warning" class="alert alert-warning"></div>
         <div class="form-grid">
           <div class="form-group">
             <label>Nombre completo *</label>
@@ -255,8 +259,17 @@
 
 <script>
   const API = 'https://allen23r32-facezoxi.hf.space';
+  // FIX: API key requerida por el backend para endpoints de escritura
+  // (/register, POST /people, PATCH /people, DELETE /people, /reload-db).
+  // El panel ya está protegido por login propio, así que se deja fija aquí.
+  const ROBOT_API_KEY = 'zoxirobit-secret-2024';
+
   let currentUser = null;
   let selectedImages = [];
+
+  function authHeaders(extra) {
+    return Object.assign({ 'X-Api-Key': ROBOT_API_KEY }, extra || {});
+  }
 
   // ── LOGIN ──────────────────────────────────────────────────
   async function doLogin() {
@@ -402,16 +415,16 @@
       </div>`;
   }
 
-  // FIX: ahora llama /reload-db después del PATCH para sincronizar HF Space
   async function togglePerson(name, newActive) {
     try {
-      await fetch(`${API}/people/${encodeURIComponent(name)}`, {
+      const res = await fetch(`${API}/people/${encodeURIComponent(name)}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: authHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ active: newActive })
       });
+      if (res.status === 401) { alert('🔑 API key inválida o vencida.'); return; }
       // Sincronizar memoria del HF Space
-      await fetch(`${API}/reload-db`, { method: 'POST' });
+      await fetch(`${API}/reload-db`, { method: 'POST', headers: authHeaders() });
       loadPersons();
       loadStats();
     } catch (e) { alert('Error actualizando persona'); }
@@ -420,8 +433,12 @@
   async function deletePerson(name) {
     if (!confirm(`¿Eliminar a ${name}? Esta acción no se puede deshacer.`)) return;
     try {
-      await fetch(`${API}/people/${encodeURIComponent(name)}`, { method: 'DELETE' });
-      await fetch(`${API}/reload-db`, { method: 'POST' });
+      const res = await fetch(`${API}/people/${encodeURIComponent(name)}`, {
+        method: 'DELETE',
+        headers: authHeaders()
+      });
+      if (res.status === 401) { alert('🔑 API key inválida o vencida.'); return; }
+      await fetch(`${API}/reload-db`, { method: 'POST', headers: authHeaders() });
       loadPersons();
       loadStats();
     } catch (e) { alert('Error eliminando persona'); }
@@ -430,19 +447,21 @@
   // Importa personas del robot que no están en Supabase
   async function importRobotPersons(names) {
     if (!confirm(`¿Importar al panel a: ${names.join(', ')}?\nSe crearán con rol "empleado" y podrás editarlos después.`)) return;
-    let ok = 0, fail = 0;
+    let ok = 0, fail = 0, authFail = false;
     for (const name of names) {
       try {
         const res = await fetch(`${API}/people`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: authHeaders({ 'Content-Type': 'application/json' }),
           body: JSON.stringify({ name, role: 'empleado', registered_by: currentUser?.username || 'admin', notes: 'Importado desde robot' })
         });
+        if (res.status === 401) { authFail = true; fail++; continue; }
         const data = await res.json();
         if (data.ok || res.ok) ok++; else fail++;
       } catch { fail++; }
     }
-    alert(`Importación: ${ok} exitosos, ${fail} fallidos.`);
+    if (authFail) alert('🔑 API key inválida o vencida. Ningún registro se completó correctamente.');
+    else alert(`Importación: ${ok} exitosos, ${fail} fallidos.`);
     loadPersons();
     loadStats();
   }
@@ -465,13 +484,19 @@
 
   function removeImage(idx) { selectedImages.splice(idx, 1); renderPreviews(); }
 
-  function renderPreviews() {
+  function renderPreviews(failedIndexes) {
+    const failed = failedIndexes || [];
     const grid = document.getElementById('preview-grid');
-    grid.innerHTML = selectedImages.map((src, i) => `
-      <div class="preview-item">
-        <img src="${src}" alt="foto ${i+1}" />
+    grid.innerHTML = selectedImages.map((src, i) => {
+      const isFailed = failed.some(f => f.index === i);
+      const reason = isFailed ? failed.find(f => f.index === i).reason : '';
+      return `
+      <div class="preview-item ${isFailed ? 'failed' : ''}">
+        <img src="${src}" alt="foto ${i+1}" title="${reason}" />
         <button class="remove-btn" onclick="removeImage(${i})">✕</button>
-      </div>`).join('');
+        ${isFailed ? `<div class="fail-tag">falló</div>` : ''}
+      </div>`;
+    }).join('');
   }
 
   async function registerPerson() {
@@ -480,8 +505,10 @@
     const notes = document.getElementById('reg-notes').value.trim();
     const successEl = document.getElementById('register-alert-success');
     const errorEl = document.getElementById('register-alert-error');
+    const warningEl = document.getElementById('register-alert-warning');
     successEl.style.display = 'none';
     errorEl.style.display = 'none';
+    warningEl.style.display = 'none';
 
     if (!name) { showAlert(errorEl, '⚠️ El nombre es obligatorio'); return; }
     if (selectedImages.length < 3) { showAlert(errorEl, '⚠️ Sube al menos 3 fotos'); return; }
@@ -494,12 +521,29 @@
       const images = selectedImages.map(src => src.includes(',') ? src.split(',')[1] : src);
       const res = await fetch(`${API}/register`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: authHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ name, role, notes, registered_by: currentUser?.username || 'admin', images })
       });
+      if (res.status === 401) {
+        showAlert(errorEl, '🔑 API key inválida o vencida. No se pudo registrar.');
+        return;
+      }
       const data = await res.json();
-      if (!data.ok) throw new Error(data.error || 'Error registrando');
-      showAlert(successEl, `✅ ${name} registrado con ${data.embeddings_saved} fotos. El robot ya puede reconocerlo.`);
+      if (!data.ok) {
+        showAlert(errorEl, `❌ Error: ${data.error}`);
+        if (data.failed?.length) renderPreviews(data.failed);
+        return;
+      }
+
+      const failedCount = data.failed?.length ?? 0;
+      const totalSent = data.total_images_sent ?? selectedImages.length;
+      showAlert(successEl, `✅ ${name} registrado con ${data.embeddings_saved} de ${totalSent} fotos. El robot ya puede reconocerlo.`);
+
+      if (failedCount > 0) {
+        const reasons = data.failed.map(f => `Foto #${f.index + 1}: ${f.reason}`).join(' · ');
+        showAlert(warningEl, `⚠️ ${failedCount} foto(s) no se pudieron usar — ${reasons}`);
+      }
+
       document.getElementById('reg-name').value = '';
       document.getElementById('reg-role').value = '';
       document.getElementById('reg-notes').value = '';
@@ -517,7 +561,9 @@
   function showAlert(el, msg) {
     el.textContent = msg;
     el.style.display = 'block';
-    setTimeout(() => el.style.display = 'none', 5000);
+    if (el.id !== 'register-alert-warning') {
+      setTimeout(() => el.style.display = 'none', 5000);
+    }
   }
 
   // ── LOGS ───────────────────────────────────────────────────
